@@ -6,12 +6,16 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run()
     {
+        Permission::create(['name' => 'product.create']);
+        Permission::create(['name' => 'product.edit']);
+        Permission::create(['name' => 'product.update']);
+        Permission::create(['name' => 'product.view']);
+
         $adminRole = Role::create(['name' => 'admin']);
         $productManagerRole = Role::create(['name' => 'product_manager']);
         $productLeaderRole = Role::create(['name' => 'product_leader']);
