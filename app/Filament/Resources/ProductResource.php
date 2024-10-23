@@ -3,17 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
-use App\Models\User;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\Permission\Models\Role;
 
 class ProductResource extends Resource
 {
@@ -25,25 +22,26 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+            TextInput::make('name')
                 ->required()
                 ->unique(ignoreRecord: true),
-            Forms\Components\TextInput::make('results')
+
+            TextInput::make('results')
                 ->required(),
 
-                Forms\Components\Select::make('product_manager')
+            Select::make('roles')
                 ->label('Product Manager')
-                ->relationship('productManager', 'name')
-                ->options(User::role('product_manager')->pluck('name', 'id'))
-                ->searchable()
-                ->required(),
+                ->relationship(auth()->user()->pluck('name', 'id'))
+                ->multiple()
+                ->preload()
+                ->searchable(),
 
-            Forms\Components\Select::make('product_leader')
+            Select::make('roles')
                 ->label('Product Leader')
-                ->relationship('productLeader', 'name')
-                ->options(User::role('product_leader')->pluck('name', 'id'))
-                ->searchable()
-                ->required(),
+                ->multiple()
+                ->options(auth()->user()->pluck('name', 'id'))
+                ->preload()
+                ->searchable(),
             ]);
     }
 
@@ -51,11 +49,20 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('results'),
-                Tables\Columns\TextColumn::make('productManager.name')->label('Product Manager'),
-                Tables\Columns\TextColumn::make('productLeader.name')->label('Product Leader'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('results'),
+
+                TextColumn::make('role.name')
+                    ->label('Product Manager'),
+
+                TextColumn::make('role.name')
+                    ->label('Product Leader'),
+
+                TextColumn::make('created_at')
+                    ->dateTime(),
             ])
             ->filters([
                 //
@@ -85,25 +92,4 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canUpdate($record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canView($record): bool
-    {
-        return auth()->user()->hasAnyRole(['admin', 'product_manager', 'product_leader']);
-    }
-
 }

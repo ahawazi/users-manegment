@@ -3,16 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\Permission\Models\Role;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
 {
@@ -24,20 +23,22 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\Select::make('roles')
-                    ->label('Roles')
-                    ->multiple()
-                    ->relationship('roles', 'name')
-                    ->options(Role::pluck('name', 'id'))
+                TextInput::make('name')
                     ->required(),
+
+                TextInput::make('email')
+                    ->email()
+                    ->required(),
+
+                Password::make('password')
+                    ->label('Password')
+                    ->required(),
+
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
             ]);
     }
 
@@ -45,12 +46,21 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable(),
-                Tables\Columns\TextColumn::make('email')->sortable(),
-                Tables\Columns\TextColumn::make('roles.name')
-                    ->label('Roles')
+                TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+
+                TextColumn::make('email')
+                    ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->dateTime(),
+
+                TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->sortable()
+                    ->badge()
+                    ->wrap()
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -79,25 +89,5 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canUpdate($record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canView($record): bool
-    {
-        return auth()->user()->hasAnyRole(['admin', 'product_manager', 'product_leader']);
     }
 }
