@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('results');
-            $table->foreignId('product_manager_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('product_leader_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('results');
             $table->timestamps();
         });
     }
