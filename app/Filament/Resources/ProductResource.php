@@ -62,7 +62,8 @@ class ProductResource extends Resource
                     ->label('Product Leader'),
 
                 TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->jalaliDateTime(),
             ])
             ->filters([
                 //

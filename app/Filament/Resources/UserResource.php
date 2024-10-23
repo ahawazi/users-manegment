@@ -53,7 +53,8 @@ class UserResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->jalaliDateTime(),
 
                 TextColumn::make('roles.name')
                     ->label('Roles')
