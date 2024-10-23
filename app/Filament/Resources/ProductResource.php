@@ -33,15 +33,15 @@ class ProductResource extends Resource
 
                 Forms\Components\Select::make('product_manager')
                 ->label('Product Manager')
-                ->relationship('productManager', 'name') // Assuming productManager is a relationship in Product model
-                ->options(User::role('product_manager')->pluck('name', 'id')) // Show users with product_manager role
+                ->relationship('productManager', 'name')
+                ->options(User::role('product_manager')->pluck('name', 'id'))
                 ->searchable()
                 ->required(),
 
             Forms\Components\Select::make('product_leader')
                 ->label('Product Leader')
-                ->relationship('productLeader', 'name') // Assuming productLeader is a relationship in Product model
-                ->options(User::role('product_leader')->pluck('name', 'id')) // Show users with product_leader role
+                ->relationship('productLeader', 'name')
+                ->options(User::role('product_leader')->pluck('name', 'id'))
                 ->searchable()
                 ->required(),
             ]);
