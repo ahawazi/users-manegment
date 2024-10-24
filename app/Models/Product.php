@@ -10,8 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model implements FilamentUser
 {
     use  HasRoles, HasPanelShield;
-    protected $fillable = ['name', 'results', 'product_manager_id', 'product_leader_id'];
-
+    protected $fillable = [
+        'name',
+        'product_manager_id',
+        'product_leader_id',
+    ];
+    protected $guard_name = "web";
     public function productManager()
     {
         return $this->belongsTo(User::class, 'product_manager_id');

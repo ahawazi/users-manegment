@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => 'web',
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -27,7 +27,7 @@ return [
     | Of course, a great default configuration has been defined for you
     | which utilizes session storage plus the Eloquent user provider.
     |
-    | All authentication guards have a user provider, which defines how the
+    | All authentication have a user provider, which defines how the
     | users are actually retrieved out of your database or other storage
     | system used by the application. Typically, Eloquent is utilized.
     |
@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
+        ]
     ],
 
     /*

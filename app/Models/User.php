@@ -25,6 +25,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
     ];
+    protected $guard_name = "web";
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,5 +48,15 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function managedProducts()
+    {
+        return $this->hasMany(Product::class, 'product_manager_id');
+    }
+
+    public function ledProducts()
+    {
+        return $this->hasMany(Product::class, 'product_leader_id');
     }
 }

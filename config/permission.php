@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'defaults' => [
+        'guard_name' => 'web',  // This should match the guard you're using (e.g., 'web')
+    ],
 
     'models' => [
 
