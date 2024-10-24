@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
+use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -22,26 +23,20 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-            TextInput::make('name')
-                ->required()
-                ->unique(ignoreRecord: true),
+                TextInput::make('name')
+                    ->required()
+                    ->unique(ignoreRecord: true),
+                Select::make('product_manager_id')
+                    ->label('Product Manager')
+                    ->options(User::all()->pluck('name', 'id')) // Fetch all users
+                    ->searchable()
+                    ->required(),
 
-            TextInput::make('results')
-                ->required(),
-
-            Select::make('roles')
-                ->label('Product Manager')
-                ->relationship(auth()->user()->pluck('name', 'id'))
-                ->multiple()
-                ->preload()
-                ->searchable(),
-
-            Select::make('roles')
-                ->label('Product Leader')
-                ->multiple()
-                ->options(auth()->user()->pluck('name', 'id'))
-                ->preload()
-                ->searchable(),
+                Select::make('product_leader_id')
+                    ->label('Product Leader')
+                    ->options(User::all()->pluck('name', 'id')) // Fetch all users
+                    ->searchable()
+                    ->required(),
             ]);
     }
 
@@ -53,12 +48,10 @@ class ProductResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('results'),
-
-                TextColumn::make('role.name')
+                TextColumn::make('productManager.name')
                     ->label('Product Manager'),
 
-                TextColumn::make('role.name')
+                TextColumn::make('productLeader.name')
                     ->label('Product Leader'),
 
                 TextColumn::make('created_at')
