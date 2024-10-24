@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 
 class ProductResource extends Resource
 {
+    protected static ?string $navigationGroup = "Products";
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark';
@@ -63,6 +64,7 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
