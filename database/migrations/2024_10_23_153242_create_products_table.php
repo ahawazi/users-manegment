@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('product_manager_id')->nullable()->constrained('users')->onDelete('set null'); // Reference to User as Product Manager
-            $table->foreignId('product_leader_id')->nullable()->constrained('users')->onDelete('set null');  // Reference to User as Product Leader
+
+            $table->foreignId('product_manager_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('product_leader_id')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
         });
     }
