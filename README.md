@@ -20,7 +20,17 @@ npm install
 
 ## Use:
 
-in first have to create user because need SuperAdmin:
+### run this command and have SuperAdmin:
+
+```php
+php artisan db:seed
+```
+
+or run the class:
+
+```php
+php artisan db:seed --class=SuperAdminSeeder
+```
 
 ### can create by:
 
