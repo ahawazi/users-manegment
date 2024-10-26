@@ -59,4 +59,10 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Project::class, 'Projects_leader_id');
     }
+
+    public function rawMaterials()
+{
+    return $this->hasMany(RawMaterials::class, 'user_id');
+}
+
 }

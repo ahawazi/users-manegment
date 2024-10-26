@@ -25,4 +25,10 @@ class Project extends Model implements FilamentUser
     {
         return $this->belongsTo(User::class, 'project_leader_id');
     }
+
+    public function rawMaterials()
+{
+    return $this->hasMany(RawMaterials::class, 'project_id');
+}
+
 }
