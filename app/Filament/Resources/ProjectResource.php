@@ -29,13 +29,13 @@ class ProjectResource extends Resource
                     ->unique(ignoreRecord: true),
                 Select::make('project_manager_id')
                     ->label('project Manager')
-                    ->options(User::all()->pluck('name', 'id')) // Fetch all users
+                    ->options(User::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
 
                 Select::make('project_leader_id')
                     ->label('project Leader')
-                    ->options(User::all()->pluck('name', 'id')) // Fetch all users
+                    ->options(User::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
             ]);
