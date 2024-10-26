@@ -7,22 +7,22 @@ use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model implements FilamentUser
+class Project extends Model implements FilamentUser
 {
     use  HasRoles, HasPanelShield;
     protected $fillable = [
         'name',
-        'product_manager_id',
-        'product_leader_id',
+        'project_manager_id',
+        'project_leader_id',
     ];
     protected $guard_name = "web";
-    public function productManager()
+    public function projectManager()
     {
-        return $this->belongsTo(User::class, 'product_manager_id');
+        return $this->belongsTo(User::class, 'project_manager_id');
     }
 
-    public function productLeader()
+    public function projectLeader()
     {
-        return $this->belongsTo(User::class, 'product_leader_id');
+        return $this->belongsTo(User::class, 'project_leader_id');
     }
 }

@@ -50,13 +50,13 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    public function managedProducts()
+    public function managedProjectss()
     {
-        return $this->hasMany(Product::class, 'product_manager_id');
+        return $this->hasMany(Project::class, 'Projects_manager_id');
     }
 
-    public function ledProducts()
+    public function ledProjectss()
     {
-        return $this->hasMany(Product::class, 'product_leader_id');
+        return $this->hasMany(Project::class, 'Projects_leader_id');
     }
 }

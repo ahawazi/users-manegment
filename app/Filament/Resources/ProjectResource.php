@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Models\Product;
+use App\Filament\Resources\ProjectResource\Pages;
+use App\Models\project;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -13,10 +13,10 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ProductResource extends Resource
+class ProjectResource extends Resource
 {
-    protected static ?string $navigationGroup = "Products";
-    protected static ?string $model = Product::class;
+    protected static ?string $navigationGroup = "projects";
+    protected static ?string $model = project::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark';
 
@@ -27,14 +27,14 @@ class ProductResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->unique(ignoreRecord: true),
-                Select::make('product_manager_id')
-                    ->label('Product Manager')
+                Select::make('project_manager_id')
+                    ->label('project Manager')
                     ->options(User::all()->pluck('name', 'id')) // Fetch all users
                     ->searchable()
                     ->required(),
 
-                Select::make('product_leader_id')
-                    ->label('Product Leader')
+                Select::make('project_leader_id')
+                    ->label('project Leader')
                     ->options(User::all()->pluck('name', 'id')) // Fetch all users
                     ->searchable()
                     ->required(),
@@ -49,11 +49,11 @@ class ProductResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('productManager.name')
-                    ->label('Product Manager'),
+                TextColumn::make('projectManager.name')
+                    ->label('project Manager'),
 
-                TextColumn::make('productLeader.name')
-                    ->label('Product Leader'),
+                TextColumn::make('projectLeader.name')
+                    ->label('project Leader'),
 
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -83,9 +83,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => Pages\ListProjects::route('/'),
+            'create' => Pages\CreateProject::route('/create'),
+            'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
 }
