@@ -15,4 +15,10 @@ class Commodity extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function rawMaterials()
+{
+    return $this->hasMany(RawMaterials::class, 'commoditie_id');
+}
+
 }
