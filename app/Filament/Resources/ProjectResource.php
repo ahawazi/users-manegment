@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\project;
 use App\Models\User;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -17,9 +19,7 @@ class ProjectResource extends Resource
 {
     protected static ?string $navigationGroup = "projects";
     protected static ?string $model = project::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-bookmark';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -63,8 +63,17 @@ class ProjectResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+
+                    Action::make('raw_materials')
+                        ->label('Raw Materials')
+                        ->url(fn($record) => url('/admin/raw-materials/create?project_name=' . $record->name))
+                        ->icon('heroicon-o-arrow-right')
+                        ->color('primary'),
+
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
