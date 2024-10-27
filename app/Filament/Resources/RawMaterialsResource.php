@@ -39,8 +39,7 @@ class RawMaterialsResource extends Resource
                 TextInput::make('project_name')
                     ->label('Project')
                     ->default(request()->query('project_name'))
-                    //todo user can't be change this
-                    // ->disabled()
+                    ->readOnly()
                     ->required(),
 
                 Select::make('commoditie_id')
