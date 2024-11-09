@@ -13,9 +13,14 @@ run:
 composer install
 ```
 
-after thet:
+next:
 ```bash
 npm install
+```
+
+next:
+```
+php artisan migrate
 ```
 
 ## Use:
